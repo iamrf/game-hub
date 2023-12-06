@@ -8,7 +8,7 @@ interface Props {
 
 const GameCard = ({ game }: Props) => {
     return (
-        <Card>
+        <Card overflow={'hidden'}>
             <Image src={'https://img.opencritic.com/' + game.images.banner.sm}></Image>
             <CardBody>
                 <HStack>

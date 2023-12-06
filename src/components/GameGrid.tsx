@@ -9,8 +9,6 @@ const GameGrid = () => {
     const { games, error, isLoading } = useGames()
     const skeleton = [1, 2, 3, 4, 5, 6]
 
-    console.log(games)
-
     return (
         <>
             {error && <Text>{error}</Text>}
