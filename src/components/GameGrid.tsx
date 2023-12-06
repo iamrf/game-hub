@@ -1,31 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import apiClient from '../services/api-client'
-import { Text } from '@chakra-ui/react'
+import { Image, Text } from '@chakra-ui/react'
+import useGames from '../hooks/useGames'
 
-interface Game {
-    id: number,
-    name: string,
-    tier: string,
-    topCriticScore: number,
-    firstReleaseDate: string
-}
 
 const GameGrid = () => {
-    const [games, setGames] = useState<Game[]>([])
-    const [error, setError] = useState('')
-
-    useEffect(() => {
-        apiClient.get('/game/hall-of-fame')
-            .then(res => {
-                setGames(res.data)
-                setError('')
-                console.log(games)
-            })
-            .catch(err => {
-                setError(err.message)
-                console.log(error)
-            })
-    }, [])
+    const { games, error } = useGames()
 
     console.log(games)
 
@@ -33,7 +11,15 @@ const GameGrid = () => {
         <>
             {error && <Text>{error}</Text>}
             <ul>
-                {games.map(game => <li key={game.id}>{game.topCriticScore} - {game.name}</li>)}
+                {games.map(game => <li key={game.id}>
+                    <div>
+                        {game.topCriticScore} - {game.name} ({game.id})
+                    </div>
+                    <div>
+                        {new Date(game.firstReleaseDate).toString()}
+                    </div>
+                    <Image src={'https://img.opencritic.com/' + game.images.box.og} alt={game.name + ' Banner'} />
+                </li>)}
             </ul>
         </>
     )
