@@ -1,5 +1,6 @@
-import { Image, Text } from '@chakra-ui/react'
+import { Image, SimpleGrid, Text } from '@chakra-ui/react'
 import useGames from '../hooks/useGames'
+import GameCard from './GameCard'
 
 
 const GameGrid = () => {
@@ -10,17 +11,9 @@ const GameGrid = () => {
     return (
         <>
             {error && <Text>{error}</Text>}
-            <ul>
-                {games.map(game => <li key={game.id}>
-                    <div>
-                        {game.topCriticScore} - {game.name} ({game.id})
-                    </div>
-                    <div>
-                        {new Date(game.firstReleaseDate).toString()}
-                    </div>
-                    <Image src={'https://img.opencritic.com/' + game.images.box.og} alt={game.name + ' Banner'} />
-                </li>)}
-            </ul>
+            <SimpleGrid columns={{ sm: 1, md: 2, lg: 3, xl: 4 }} padding={'10px'} spacing={10}>
+                {games.map(game => <GameCard game={game} key={game.id} />)}
+            </SimpleGrid>
         </>
     )
 }
