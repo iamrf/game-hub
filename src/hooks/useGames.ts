@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import apiClient from "../services/api-client";
-import { CanceledError } from "axios";
+import useData from "./useData";
 
 export interface Banner {
     og: string;
@@ -21,31 +19,6 @@ export interface Game {
     images: GameImage;
 }
 
-const useGames = () => {
-    const controller = new AbortController();
-    const [games, setGames] = useState<Game[]>([]);
-    const [error, setError] = useState("");
-    const [isLoading, setLoading] = useState(false);
-
-    useEffect(() => {
-        setLoading(true);
-        apiClient
-            .get("/game/hall-of-fame", { signal: controller.signal })
-            .then((res) => {
-                setGames(res.data);
-                setError("");
-                setLoading(false);
-            })
-            .catch((err) => {
-                if (err instanceof CanceledError) return;
-                setError(err.message);
-                setLoading(false);
-            });
-
-        return () => controller.abort();
-    }, []);
-
-    return { games, error, isLoading };
-};
+const useGames = () => useData<Game>("game/hall-of-fame");
 
 export default useGames;
