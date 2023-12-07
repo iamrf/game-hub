@@ -1,21 +1,22 @@
 import React from 'react'
 import useGenres from '../hooks/useGenrs'
-import { SkeletonText, Text } from '@chakra-ui/react'
+import { List, ListItem, SkeletonText, Spinner, Text } from '@chakra-ui/react'
 
 const Aside = () => {
     const { data: genres, error, isLoading } = useGenres()
     const skeleton = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-    console.log(genres)
+    if (error) return null;
+    if (isLoading) return <Spinner />;
 
     return (
-        <>
+        <List>
             {error && <Text>{error}</Text>}
-            {isLoading && skeleton.map(sk => <li key={sk}>
+            {isLoading && skeleton.map(sk => <ListItem marginY={4} key={sk}>
                 <SkeletonText width={40} marginY={2} />
-            </li>)}
-            <ul>{genres.map(genre => <li key={genre.id}>{genre.name}</li>)}</ul>
-        </>
+            </ListItem>)}
+            <ul>{genres.map(genre => <ListItem marginY={4} key={genre.id}>{genre.name}</ListItem>)}</ul>
+        </List>
     )
 }
 

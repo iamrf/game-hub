@@ -3,7 +3,7 @@ import apiClient from "../services/api-client";
 import { CanceledError } from "axios";
 
 const useData = <T>(endpoint: string) => {
-    const controller = new AbortController();
+    // const controller = new AbortController();
     const [data, setData] = useState<T[]>([]);
     const [error, setError] = useState("");
     const [isLoading, setLoading] = useState(false);
@@ -11,7 +11,9 @@ const useData = <T>(endpoint: string) => {
     useEffect(() => {
         setLoading(true);
         apiClient
-            .get(endpoint, { signal: controller.signal })
+            .get(endpoint, {
+                // signal: controller.signal,
+            })
             .then((res) => {
                 setData(res.data);
                 setError("");
@@ -23,7 +25,7 @@ const useData = <T>(endpoint: string) => {
                 setLoading(false);
             });
 
-        return () => controller.abort();
+        // return () => controller.abort();
     }, []);
 
     return { data, error, isLoading };
